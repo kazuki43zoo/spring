@@ -1,5 +1,5 @@
 /**
- *    Copyright 2010-2016 the original author or authors.
+ *    Copyright 2010-2017 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -40,7 +40,8 @@ import org.springframework.util.StringUtils;
  *
  * @author Michael Lanyon
  * @author Eduardo Macarron
- * 
+ * @author Putthiphong Boonphong
+ *
  * @see MapperFactoryBean
  * @see ClassPathMapperScanner
  * @since 1.2.0
@@ -53,9 +54,24 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
    * {@inheritDoc}
    */
   @Override
-  public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+  public void setResourceLoader(ResourceLoader resourceLoader) {
+    this.resourceLoader = resourceLoader;
+  }
 
-    AnnotationAttributes annoAttrs = AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    AnnotationAttributes mapperScanAttrs = AnnotationAttributes
+        .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScan.class.getName()));
+    if (mapperScanAttrs != null) {
+      registerBeanDefinitions(mapperScanAttrs, registry);
+    }
+  }
+
+  void registerBeanDefinitions(AnnotationAttributes annoAttrs, BeanDefinitionRegistry registry) {
+
     ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
 
     // this check is needed in Spring 3.1
@@ -100,16 +116,30 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
     for (Class<?> clazz : annoAttrs.getClassArray("basePackageClasses")) {
       basePackages.add(ClassUtils.getPackageName(clazz));
     }
+
     scanner.registerFilters();
     scanner.doScan(StringUtils.toStringArray(basePackages));
   }
 
   /**
-   * {@inheritDoc}
+   * A {@link MapperScannerRegistrar} for {@link MapperScans}.
+   * @since 1.3.2
    */
-  @Override
-  public void setResourceLoader(ResourceLoader resourceLoader) {
-    this.resourceLoader = resourceLoader;
+  static class RepeatingRegistrar extends MapperScannerRegistrar {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
+                                        BeanDefinitionRegistry registry) {
+      AnnotationAttributes mapperScansAttrs = AnnotationAttributes
+          .fromMap(importingClassMetadata.getAnnotationAttributes(MapperScans.class.getName()));
+      if (mapperScansAttrs != null) {
+        for(AnnotationAttributes mapperScanAttrs : mapperScansAttrs.getAnnotationArray("value")) {
+          registerBeanDefinitions(mapperScanAttrs, registry);
+        }
+      }
+    }
   }
 
 }

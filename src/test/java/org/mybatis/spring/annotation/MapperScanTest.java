@@ -232,7 +232,7 @@ public final class MapperScanTest {
     applicationContext.registerBeanDefinition("sqlSessionTemplate", definition);
 
     applicationContext.register(AppConfigWithSqlSessionTemplate.class);
-    
+
     startContext();
 
     // all interfaces with methods should be loaded
@@ -240,8 +240,21 @@ public final class MapperScanTest {
     applicationContext.getBean("mapperSubinterface");
     applicationContext.getBean("mapperChildInterface");
     applicationContext.getBean("annotatedMapper");
-    
+
   }
+
+
+
+  @Test
+  public void testScanWithMapperScans() {
+    applicationContext.register(AppConfigWithMapperScans.class);
+
+    startContext();
+
+    applicationContext.getBean("ds1Mapper");
+    applicationContext.getBean("ds2Mapper");
+  }
+
 
   @Configuration
   @MapperScan("org.mybatis.spring.mapper")
@@ -286,6 +299,14 @@ public final class MapperScanTest {
   @Configuration
   @MapperScan(basePackages = "org.mybatis.spring.mapper", factoryBean = DummyMapperFactoryBean.class)
   public static class AppConfigWithCustomMapperFactoryBean {
+  }
+
+  @Configuration
+  @MapperScans({
+      @MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds1")
+      ,@MapperScan(basePackages = "org.mybatis.spring.annotation.mapper.ds2")
+  })
+  public static class AppConfigWithMapperScans {
   }
 
   public static class BeanNameGenerator implements org.springframework.beans.factory.support.BeanNameGenerator {
