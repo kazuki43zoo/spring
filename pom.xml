@@ -105,7 +105,7 @@
     <gcu.product>Spring</gcu.product>
     <osgi.import>org.springframework.batch.*;resolution:=optional,*</osgi.import>
     <osgi.dynamicImport>*</osgi.dynamicImport>
-    <spring.version>4.3.12.RELEASE</spring.version>
+    <spring.version>3.2.2.RELEASE</spring.version>
   </properties>
 
   <dependencies>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
-      <version>3.4.5</version>
+      <version>3.4.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -133,7 +133,7 @@
     <dependency>
       <groupId>org.springframework.batch</groupId>
       <artifactId>spring-batch-infrastructure</artifactId>
-      <version>3.0.8.RELEASE</version>
+      <version>2.1.0.RELEASE</version>
       <scope>provided</scope>
     </dependency>
 
