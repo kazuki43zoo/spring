@@ -103,7 +103,7 @@
     <gcu.product>Spring</gcu.product>
     <osgi.import>org.springframework.batch.*;resolution:=optional,*</osgi.import>
     <osgi.dynamicImport>*</osgi.dynamicImport>
-    <spring.version>4.2.4.RELEASE</spring.version>
+    <spring.version>3.1.1.RELEASE</spring.version>
   </properties>
 
   <dependencies>
@@ -131,7 +131,7 @@
     <dependency>
       <groupId>org.springframework.batch</groupId>
       <artifactId>spring-batch-infrastructure</artifactId>
-      <version>3.0.6.RELEASE</version>
+      <version>2.1.0.RELEASE</version>
       <scope>provided</scope>
     </dependency>
 
