@@ -1,17 +1,10 @@
 language: java
 sudo: false
-dist: precise
-
-addons:
-  hosts:
-    - mybatisci
-  hostname: mybatisci
 
 jdk:
+  - oraclejdk9
   - oraclejdk8
-  - oraclejdk7
-  - openjdk7
-  - openjdk6
+  - openjdk8
 
 after_success:
   - chmod -R 777 ./travis/after_success.sh
