@@ -46,6 +46,6 @@ jobs:
       - name: Checkout compatibility check brach
         run: git checkout compatibility-check-spring6
       - name: Rebase
-        run: echo ${GITHUB_HEAD_REF} && git rebase ${GITHUB_HEAD_REF}
+        run: echo ${GITHUB_REF} && git merge ${GITHUB_REF}
       - name: Test with Spring 6 / Spring Batch 5 support
         run: ./mvnw -U test -D"license.skip=true" -D"animal.sniffer.skip=true" -D"spring.version=6.0.0-SNAPSHOT" -D"spring-batch.version=5.0.0-SNAPSHOT"
