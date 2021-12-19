@@ -18,7 +18,6 @@ name: Compatibility check for Spring 6/Spring Batch 5 support
 
 on:
   push:
-    branches: [master, compatibility-check-spring6]
   schedule:
     - cron: "0 0 * * *"
 
